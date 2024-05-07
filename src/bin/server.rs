@@ -12,7 +12,7 @@ async fn handle_connection(
     bcast_tx: Sender<String>,
 ) -> Result<(), Box<dyn Error + Send + Sync>> {
     ws_stream
-        .send(Message::text("Welcome to chat! Type a message".to_string()))
+        .send(Message::text("From Rafif's Server: Welcome to chat! Type a message".to_string()))
         .await?;
     let mut bcast_rx = bcast_tx.subscribe();
 
@@ -25,7 +25,7 @@ async fn handle_connection(
                 match incoming {
                     Some(Ok(msg)) => {
                         if let Some(text) = msg.as_text() {
-                            println!("From client {addr:?} {text:?}");
+                            println!("From client {addr:?} - {}", text);
                             bcast_tx.send(text.into())?;
                         }
                     }
@@ -54,7 +54,6 @@ async fn main() -> Result<(), Box<dyn Error + Send + Sync>> {
         tokio::spawn(async move {
             // Wrap the raw TCP stream into a websocket.
             let ws_stream = ServerBuilder::new().accept(socket).await?;
-
             handle_connection(addr, ws_stream, bcast_tx).await
         });
     }

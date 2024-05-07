@@ -31,13 +31,12 @@ async fn main() -> Result<(), tokio_websockets::Error> {
                 match res {
                     Ok(None) => return Ok(()),
                     Ok(Some(line)) => {
-                        let message = ("Rafif's Computer: ".to_string()) + &line.to_string();
+                        let message = ("Ferhat's Computer: ".to_string()) + &line.to_string();
                         ws_stream.send(Message::text(message)).await?;
                     },
                     Err(err) => return Err(err.into()),
                 }
             }
-
         }
     }
 }
